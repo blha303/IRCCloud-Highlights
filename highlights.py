@@ -1,3 +1,4 @@
+from __future__ import print_function # for print('', end='')
 import requests
 import time
 import json
@@ -65,7 +66,7 @@ def parseline(line):
             try:
                 parseline(oobline)
             except:
-                print json.dumps(oobline)
+                print(json.dumps(oobline))
                 raise
 
     def p_makeserver(l):
@@ -98,11 +99,11 @@ def parseline(line):
             for hl in user["highlights"]:
                 if hl in l["msg"]:
                     l["msg"] = l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET)
-        print msgfmt.format(time=time.strftime("%H:%M:%S", ts),
+        print(msgfmt.format(time=time.strftime("%H:%M:%S", ts),
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"]) if Fore.RED in l["msg"] else ""
+                            msg=l["msg"])) if Fore.RED in l["msg"] else ""
 
     def p_notice(l):
         for ignore in servers[l["cid"]]["ignores"]:
@@ -112,11 +113,11 @@ def parseline(line):
         for hl in user["highlights"]:
             if hl in l["msg"]:
                 l["msg"] = l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET)
-        print noticefmt.format(time=time.strftime("%H:%M:%S", ts),
+        print(noticefmt.format(time=time.strftime("%H:%M:%S", ts),
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"]) if Fore.RED in l["msg"] else ""
+                            msg=l["msg"])) if Fore.RED in l["msg"] else ""
 
     def p_channel_timestamp(l):
         buffers[l["bid"]]["timestamp"] = l["timestamp"]
@@ -156,13 +157,13 @@ if __name__ == "__main__":
         if isauthed:
             tmpcookie = isauthed
         else:
-            print "Unable to authenticate with email " + sys.argv[1]
+            print("Unable to authenticate with email " + sys.argv[1])
             sys.exit(2)
     elif (tmpcookie == "PUT COOKIE HERE" and len(sys.argv) == 2
             and not "@" in sys.argv[1]):
         tmpcookie = sys.argv[1]
     elif tmpcookie == "PUT COOKIE HERE":
-        print "Usage: highlights.py <cookie> | highlights.py <email> <password>"
+        print("Usage: highlights.py <cookie> | highlights.py <email> <password>")
         sys.exit(2)
     try:
         for line in streamiter(tmpcookie):
