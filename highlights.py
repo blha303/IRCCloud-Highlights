@@ -92,13 +92,17 @@ def parseline(line):
             if fnmatchcase(l["from"] + "!" + l["hostmask"], ignore):
                 return
         ts = getts(l)
-        for hl in user["highlights"]:
-            if hl in l["msg"]:
-                print msgfmt.format(time=time.strftime("%H:%M:%S", ts),
-                                    server=servers[l["cid"]]["name"],
-                                    channel=l["chan"],
-                                    nick=servers[l["cid"]]["nick"],
-                                    msg=l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET))
+        if l["chan"] == servers[l["cid"]]["nick"]:
+            l["msg"] = Fore.RED + l["msg"] + Fore.RESET
+        else:
+            for hl in user["highlights"]:
+                if hl in l["msg"]:
+                    l["msg"] = l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET)
+        print msgfmt.format(time=time.strftime("%H:%M:%S", ts),
+                            server=servers[l["cid"]]["name"],
+                            channel=l["chan"],
+                            nick=l["from"],
+                            msg=l["msg"])
 
     def p_notice(l):
         for ignore in servers[l["cid"]]["ignores"]:
@@ -107,11 +111,12 @@ def parseline(line):
         ts = getts(l)
         for hl in user["highlights"]:
             if hl in l["msg"]:
-                print noticefmt.format(time=time.strftime("%H:%M:%S", ts),
-                                       server=servers[l["cid"]]["name"],
-                                       channel=l["chan"],
-                                       nick=servers[l["cid"]]["nick"],
-                                       msg=l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET))
+                l["msg"] = l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET)
+        print noticefmt.format(time=time.strftime("%H:%M:%S", ts),
+                            server=servers[l["cid"]]["name"],
+                            channel=l["chan"],
+                            nick=l["from"],
+                            msg=l["msg"])
 
     def p_channel_timestamp(l):
         buffers[l["bid"]]["timestamp"] = l["timestamp"]
