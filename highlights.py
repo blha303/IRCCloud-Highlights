@@ -100,12 +100,14 @@ def parseline(line):
         else:
             for hl in user["highlights"]:
                 if hl in l["msg"]:
-                    l["msg"] = l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET)
+                    l["msg"] = l["msg"].replace(hl, Fore.RED + hl + Fore.RESET)
         print(msgfmt.format(time=time.strftime("%H:%M:%S", ts),
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"])) if Fore.RED in l["msg"] else ""
+                            msg=l["msg"].encode("ascii", "replace").replace(u"\u200b", "")
+                            )
+             ) if Fore.RED in l["msg"] else ""
 
     def p_notice(l):
         for ignore in servers[l["cid"]]["ignores"]:
@@ -114,14 +116,19 @@ def parseline(line):
         if l["from"] == servers[l["cid"]]["nick"]:
             return
         ts = getts(l)
-        for hl in user["highlights"]:
-            if hl in l["msg"]:
-                l["msg"] = l["msg"].encode("ascii", "replace").replace(hl, Fore.RED + hl + Fore.RESET)
+        if l["chan"] == servers[l["cid"]]["nick"]:
+            l["msg"] = Fore.RED + l["msg"] + Fore.RESET
+        else:
+            for hl in user["highlights"]:
+                if hl in l["msg"]:
+                    l["msg"] = l["msg"].replace(hl, Fore.RED + hl + Fore.RESET)
         print(noticefmt.format(time=time.strftime("%H:%M:%S", ts),
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"])) if Fore.RED in l["msg"] else ""
+                            msg=l["msg"].encode("ascii", "replace").replace(u"\u200b", "")
+                            )
+             ) if Fore.RED in l["msg"] else ""
 
     def p_channel_timestamp(l):
         buffers[l["bid"]]["timestamp"] = l["timestamp"]
