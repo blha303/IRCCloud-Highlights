@@ -92,7 +92,7 @@ def parseline(line):
         for ignore in servers[l["cid"]]["ignores"]:
             if fnmatchcase(l["from"] + "!" + l["hostmask"], ignore):
                 return
-        if l["nick"] == servers[l["cid"]]["nick"]:
+        if l["from"] == servers[l["cid"]]["nick"]:
             return
         ts = getts(l)
         if l["chan"] == servers[l["cid"]]["nick"]:
@@ -105,12 +105,14 @@ def parseline(line):
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"]))# if Fore.RED in l["msg"] else ""
+                            msg=l["msg"])) if Fore.RED in l["msg"] else ""
 
     def p_notice(l):
         for ignore in servers[l["cid"]]["ignores"]:
             if fnmatchcase(l["from"] + "!" + l["hostmask"], ignore):
                 return
+        if l["from"] == servers[l["cid"]]["nick"]:
+            return
         ts = getts(l)
         for hl in user["highlights"]:
             if hl in l["msg"]:
@@ -170,7 +172,5 @@ if __name__ == "__main__":
     try:
         for line in streamiter(tmpcookie):
             parseline(line)
-#    except KeyboardInterrupt:
-#        sys.exit()
-    finally:
+    except KeyboardInterrupt:
         sys.exit()
