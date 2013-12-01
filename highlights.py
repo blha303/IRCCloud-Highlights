@@ -93,7 +93,7 @@ def parseline(line):
             if fnmatchcase(l["from"] + "!" + l["hostmask"], ignore):
                 return
         ts = getts(l)
-        if l["chan"] == servers[l["cid"]]["nick"]:
+        if l["chan"] == servers[l["cid"]]["nick"] and l["nick"] != servers[l["cid"]]["nick"]:
             l["msg"] = Fore.RED + l["msg"] + Fore.RESET
         else:
             for hl in user["highlights"]:
