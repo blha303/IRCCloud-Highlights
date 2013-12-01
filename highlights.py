@@ -105,7 +105,7 @@ def parseline(line):
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"].encode("ascii", "replace").replace(u"\u200b", "")
+                            msg=l["msg"].replace(u"\u200b", "").encode("ascii", "replace")
                             )
              ) if Fore.RED in l["msg"] else ""
 
@@ -126,7 +126,7 @@ def parseline(line):
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"].encode("ascii", "replace").replace(u"\u200b", "")
+                            msg=l["msg"].replace(u"\u200b", "").encode("ascii", "replace")
                             )
              ) if Fore.RED in l["msg"] else ""
 
