@@ -170,5 +170,7 @@ if __name__ == "__main__":
     try:
         for line in streamiter(tmpcookie):
             parseline(line)
-    except KeyboardInterrupt:
+#    except KeyboardInterrupt:
+#        sys.exit()
+    finally:
         sys.exit()
