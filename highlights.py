@@ -105,7 +105,7 @@ def parseline(line):
                             server=servers[l["cid"]]["name"],
                             channel=l["chan"],
                             nick=l["from"],
-                            msg=l["msg"])) if Fore.RED in l["msg"] else ""
+                            msg=l["msg"]))# if Fore.RED in l["msg"] else ""
 
     def p_notice(l):
         for ignore in servers[l["cid"]]["ignores"]:
