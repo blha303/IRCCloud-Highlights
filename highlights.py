@@ -58,7 +58,6 @@ def parseline(line):
         user["num_invites"] = l["num_invites"]
 
     def p_oob_include(l):
-        """ Hiding old highlights. Remove this line and the three "s on line 71 to undo this
         req = requests.get("https://www.irccloud.com" + l["url"],
                            headers={"Cookie": "session=%s" % tmpcookie,
                                     "Accept-Encoding": "gzip"}).json()
@@ -67,7 +66,7 @@ def parseline(line):
                 parseline(oobline)
             except:
                 print json.dumps(oobline)
-                raise """
+                raise
 
     def p_makeserver(l):
         for b in user["highlights"]:
